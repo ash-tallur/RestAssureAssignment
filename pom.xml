@@ -45,6 +45,7 @@
       <artifactId>jackson-databind</artifactId>
       <version>2.10.2</version>
     </dependency>
+<<<<<<< HEAD
 
     <!-- https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson -->
     <dependency>
@@ -53,6 +54,8 @@
       <version>2.9.0</version>
     </dependency>
 
+=======
+>>>>>>> 7dbf83d (Add files via upload)
   </dependencies>
 
   <build>
