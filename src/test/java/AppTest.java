@@ -1,8 +1,13 @@
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.restassured.http.ContentType;
 import org.junit.Assert;
 import org.junit.Test;
-import java.util.ArrayList;
-import java.util.List;
+import reposeModel.ReceivedUserResponse;
+import requestModel.CreateUsersWithArrayRequestModel;
+import requestModel.SendUserDetails;
+
 import static io.restassured.RestAssured.given;
 
 
@@ -10,74 +15,44 @@ public class AppTest
 {
     //Test for post request
     @Test
-    public void sendUserDetails(){
+    public void postUserDetails(){
 
-        SendUserDetails sendData = new SendUserDetails();
-        sendData.setId(3);
-        sendData.setUsername("joe");
-        sendData.setFirstName("Joey");
-        sendData.setLastName("Tribbiani");
-        sendData.setEmail("joey.tribbani@abc.com");
-        sendData.setPassword("12345");
-        sendData.setPhone("6578493986");
-        sendData.setUserStatus(1);
+        SendUserDetails sendData;
+        sendData = new SendUserDetails(3,"joe","Joey","Tribbiani","joey.tribbabi@abc.com","12345","6578493986",1);
 
-        //created a java object and sending it to the post request and checking the status code of 200
-        ReceivedUserResponse postResponse =
-                given().contentType(ContentType.JSON).
-                        body(sendData).log().body().
-                        when().post("https://petstore.swagger.io/v2/user").
-                        as(ReceivedUserResponse.class);
+        ReceivedUserResponse postResponse;
+        postResponse = given()
+                        .contentType(ContentType.JSON)
+                        .body(sendData).log().all()
+                        .when()
+                        .post("https://petstore.swagger.io/v2/user")
+                        .as(ReceivedUserResponse.class);
 
         postResponse.printResponse();
+        Assert.assertEquals(200,postResponse.getCode());
     }
 
     @Test
-    public void sendMultipleUsers(){
+    public void sendMultipleUsers() {
+        SendUserDetails sendData1 = new SendUserDetails(5, "joe", "Joey", "Tribbiani", "joey.tribbabi@abc.com", "12345", "6578493986", 1);
+        SendUserDetails sendData2 = new SendUserDetails(6, "phoebo", "Phoebe", "Buffay", "phoebe.buffay@abc.com", "12345", "6578457886", 1);
 
-        //sending two user details
-        SendUserDetails sendData1 = new SendUserDetails();
-        sendData1.setId(3);
-        sendData1.setUsername("joe");
-        sendData1.setFirstName("Joey");
-        sendData1.setLastName("Tribbiani");
-        sendData1.setEmail("joey.tribbani@abc.com");
-        sendData1.setPassword("12345");
-        sendData1.setPhone("6578493986");
-        sendData1.setUserStatus(1);
-
-        SendUserDetails sendData2 = new SendUserDetails();
-        sendData2.setId(4);
-        sendData2.setUsername("phoebo");
-        sendData2.setFirstName("Phoebe");
-        sendData2.setLastName("Buffay");
-        sendData2.setEmail("phoebe.buffay@abc.com");
-        sendData2.setPassword("12345");
-        sendData2.setPhone("6578457886");
-        sendData2.setUserStatus(1);
-
-        //adding both the user details to an array
-        List<SendUserDetails> sendJsonArray = new ArrayList<>();
-
-        sendJsonArray.add(sendData1);
-        sendJsonArray.add(sendData2);
+        CreateUsersWithArrayRequestModel createUsersWithArrayRequestModel = new CreateUsersWithArrayRequestModel();
+        createUsersWithArrayRequestModel.addaUserDetail(sendData1);
+        createUsersWithArrayRequestModel.addaUserDetail(sendData2);
 
         ReceivedUserResponse postResponse =
                 given().contentType(ContentType.JSON).
-                        body(sendJsonArray).log().body().
+                        body(createUsersWithArrayRequestModel).log().all().
                         when().post("https://petstore.swagger.io/v2/user/createWithArray").
                         as(ReceivedUserResponse.class);
 
-        //printing the response
+//        Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+//        gson.toJson(createUsersWithArrayRequestModel);
+
         postResponse.printResponse();
-        //Verifyign the response code
-        Assert.assertEquals(200,postResponse.getCode());
-
+        Assert.assertEquals(200, postResponse.getCode());
+        Assert.assertEquals("unknown",postResponse.getType());
+        //Assert.assertEquals("ok",postResponse.getMessage());
     }
-
-
-
-
-
-
 }
