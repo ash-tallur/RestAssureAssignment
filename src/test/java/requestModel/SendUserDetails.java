@@ -47,4 +47,9 @@ public class SendUserDetails {
     public String getPhone() {
         return phone;
     }
+
+    public void printDetails(){
+        System.out.println("The user id " + id + "username " + username + "firstname " + firstName +
+                            "email" + email + "phone" + phone);
+    }
 }
