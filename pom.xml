@@ -22,7 +22,11 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+<<<<<<< HEAD
       <version>4.13.2</version>
+=======
+      <version>4.11</version>
+>>>>>>> 7dbf83d (Add files via upload)
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -45,6 +49,7 @@
       <artifactId>jackson-databind</artifactId>
       <version>2.10.2</version>
     </dependency>
+<<<<<<< HEAD
 
     <!-- https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson -->
     <dependency>
@@ -59,6 +64,8 @@
       <version>3.0.0</version>
     </dependency>
 
+=======
+>>>>>>> 7dbf83d (Add files via upload)
   </dependencies>
 
   <build>
